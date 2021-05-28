@@ -1,0 +1,29 @@
+{
+    "name": "simoneddy/coder",
+    "description": "library for generating code inspired by laravel and phpspec",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Eddy",
+            "email": "simon@simoneddy.com.au"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+       "psr-4": {
+          "Eddy\\Coder\\": "src"
+       }
+    },
+    "config": {
+       "bin-dir": "bin"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^7.0",
+        "symfony/var-dumper": "^5.2"
+    },
+    "require": {
+        "symfony/filesystem": "^5.2"
+    }
+}
