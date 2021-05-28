@@ -7,7 +7,8 @@ class PhpResource implements CoderResource
 
     public function __construct(
         private string $name,
-        private string $namespace
+        private string $namespace,
+        private string $srcDir = ''
     ) {
         $this->filename = $name . '.php';
     }
@@ -30,5 +31,10 @@ class PhpResource implements CoderResource
     public function getExtension(): string
     {
         return 'php';
+    }
+
+    public function getSrcDir(): string
+    {
+        return $this->srcDir;
     }
 }

@@ -4,14 +4,16 @@ namespace spec\Eddy\Coder;
 
 use Eddy\Coder\Creator;
 use Eddy\Coder\CoderResource as R;
+use Eddy\Coder\Templator as T;
+use Eddy\Coder\TemplateManager as TM;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CreatorSpec extends ObjectBehavior
 {
-    function let(Filesystem $fs)
+    function let(Filesystem $fs, TM $manager, T $templator)
     {
-        $this->beConstructedWith($fs);
+        $this->beConstructedWith($fs, $manager, $templator);
     }
 
     function it_is_initializable()
@@ -20,12 +22,16 @@ class CreatorSpec extends ObjectBehavior
     }
 
     function it_creates_a_file_from_the_given_resource(
-        R $resource
+        R $resource,
+        TM $manager
     ) {
         $resource->getFilename()->willReturn('TestClass.php');
         $resource->getNamespace()->willReturn('Testing\\');
+        $resource->getSrcDir()->willReturn(dirname(__DIR__, 2) . '/tests/storage');
 
-        $this->create($resource, dirname(__DIR__, 2) . '/tests/storage')->shouldReturn(1);
-        dump(file_exists(dirname(__DIR__, 2) . '/tests/storage/Testing/TestClass.php'));
+        $manager->get('class')->willReturn('%name%');
+
+        $this->create($resource, 'class')->shouldReturn(1);
+        // dump(file_exists(dirname(__DIR__, 2) . '/tests/storage/Testing/TestClass.php'));
     }
 }

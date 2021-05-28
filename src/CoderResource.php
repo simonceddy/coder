@@ -10,4 +10,6 @@ interface CoderResource
     public function getNamespace(): string;
 
     public function getExtension(): string;
+
+    public function getSrcDir(): string;
 }
