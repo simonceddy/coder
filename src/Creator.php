@@ -18,8 +18,8 @@ class Creator
     {
         $parts = array_map(
             function ($part) {
-                if (strrpos($part, DIRECTORY_SEPARATOR) === strlen($part) - 1) {
-                    $part .= DIRECTORY_SEPARATOR;
+                if (strrpos($part, DIRECTORY_SEPARATOR) !== strlen($part) - 1) {
+                    return $part . DIRECTORY_SEPARATOR;
                 }
                 return $part;
             },

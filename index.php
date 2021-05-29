@@ -16,7 +16,7 @@ $creator = new Creator(
     new Templator()
 );
 
-$pathToStorage = 'tests/storage/';
+$pathToStorage = 'tests/storage';
 
 if ($fs->exists($pathToStorage)) {
     $fs->remove($pathToStorage);
