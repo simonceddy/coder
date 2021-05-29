@@ -9,7 +9,6 @@ use Symfony\Component\Filesystem\Filesystem;
 require 'vendor/autoload.php';
 $fs = new Filesystem();
 $creator = new Creator(
-    $fs,
     new TemplateManager($fs, [
         __DIR__ . '/tests'
     ]),
@@ -24,4 +23,6 @@ if ($fs->exists($pathToStorage)) {
 
 $beef = new PhpResource('BigBeef', 'Roast\\Beef\\', $pathToStorage);
 
-$creator->create($beef, 'class');
+$generatedBeef = $creator->create($beef, 'class');
+
+dd($generatedBeef);

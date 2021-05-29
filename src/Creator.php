@@ -7,7 +7,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class Creator
 {
     public function __construct(
-        private Filesystem $fs,
         private TemplateManager $templates,
         private Templator $templator
     ) {
@@ -16,16 +15,26 @@ class Creator
 
     private function getPath(CoderResource $resource)
     {
+        $ns = explode('\\', $resource->getNamespace());
+
+        if (count($ns) > 0) {
+            array_shift($ns);
+        }
+
+        $ns = count($ns) > 0 ? implode(DIRECTORY_SEPARATOR, $ns) : '';
+
         $parts = array_map(
             function ($part) {
-                if (strrpos($part, DIRECTORY_SEPARATOR) !== strlen($part) - 1) {
+                if (($l = strlen($part)) > 0
+                    && strrpos($part, DIRECTORY_SEPARATOR) !== $l - 1
+                ) {
                     return $part . DIRECTORY_SEPARATOR;
                 }
                 return $part;
             },
             [
                 $resource->getSrcDir(),
-                str_replace('\\', '/', $resource->getNamespace())
+                $ns
             ]
         );
 
@@ -37,19 +46,16 @@ class Creator
         string $templateName = 'class'
     ) {
         $fullPath = $this->getPath($resource);
-        
-        if ($this->fs->exists($fullPath)) {
-            dump('file exists');
-            return 0;
-        }
 
         $contents = $this->templator->format(
             $resource,
             $this->templates->get($templateName)
         );
 
-        $this->fs->dumpFile($fullPath, $contents);
+        // dd($contents);
+        $gc = new GeneratedCode($fullPath, $contents);
 
-        return 1;
+
+        return $gc;
     }
 }
