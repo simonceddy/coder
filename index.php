@@ -10,7 +10,9 @@ require 'vendor/autoload.php';
 $fs = new Filesystem();
 $creator = new Creator(
     $fs,
-    new TemplateManager($fs),
+    new TemplateManager($fs, [
+        __DIR__ . '/tests'
+    ]),
     new Templator()
 );
 
@@ -22,4 +24,4 @@ if ($fs->exists($pathToStorage)) {
 
 $beef = new PhpResource('BigBeef', 'Roast\\Beef\\', $pathToStorage);
 
-$creator->create($beef);
+$creator->create($beef, 'class');

@@ -16,6 +16,7 @@ class TemplatorSpec extends ObjectBehavior
     function it_formats_the_given_template_for_the_given_resource(R $resource)
     {
         $resource->getName()->willReturn('World');
+        $resource->getNamespace()->willReturn('');
         $this->format($resource, 'Hello %name%')->shouldReturn('Hello World');
     }
 }
