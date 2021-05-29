@@ -14,12 +14,30 @@ class Creator
         // TODO: write logic here
     }
 
+    private function getPath(CoderResource $resource)
+    {
+        $parts = array_map(
+            function ($part) {
+                if (strrpos($part, DIRECTORY_SEPARATOR) === strlen($part) - 1) {
+                    $part .= DIRECTORY_SEPARATOR;
+                }
+                return $part;
+            },
+            [
+                $resource->getSrcDir(),
+                str_replace('\\', '/', $resource->getNamespace())
+            ]
+        );
+
+        return $parts[0] . $parts[1] . $resource->getFilename();
+    }
+
     public function create(
         CoderResource $resource,
         string $templateName = 'class'
     ) {
-        $dirs = str_replace('\\', '/', $resource->getNamespace());
-        $fullPath = $resource->getSrcDir() . $dirs . $resource->getFilename();
+        $fullPath = $this->getPath($resource);
+        
         if ($this->fs->exists($fullPath)) {
             dump('file exists');
             return 0;
